@@ -1,0 +1,16 @@
+[
+{
+  "modid": "lukescosmetics",
+  "name": "Luke's Cosmetics",
+  "description": "Renders cosmetics purchased by players",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["LukeGrahamLandry"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
