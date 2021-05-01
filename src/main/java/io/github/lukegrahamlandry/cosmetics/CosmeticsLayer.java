@@ -16,7 +16,7 @@ public class CosmeticsLayer implements LayerRenderer<EntityLivingBase> {
     @Override
     public void doRenderLayer(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         this.renderPlayer.bindTexture(model.getTexture());
-        model.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        model.render(this.renderPlayer, scale); // .render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
     }
 
     @Override

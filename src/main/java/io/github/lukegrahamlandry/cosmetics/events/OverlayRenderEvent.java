@@ -3,6 +3,7 @@ package io.github.lukegrahamlandry.cosmetics.events;
 import io.github.lukegrahamlandry.cosmetics.CosmeticsLayer;
 import io.github.lukegrahamlandry.cosmetics.CosmeticsMain;
 import io.github.lukegrahamlandry.cosmetics.TestHelmet;
+import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -15,6 +16,9 @@ import net.minecraftforge.fml.relauncher.Side;
 public class OverlayRenderEvent {
     @SubscribeEvent
     public static void renderthings(RenderPlayerEvent.Pre event){
+        // event.getPartialRenderTick()
         event.getRenderer().addLayer(new CosmeticsLayer(event.getRenderer()));
+        // event.getRenderer().getMainModel().bipedHeadwear = new ModelRenderer(new TestHelmet());
     }
 }
+
