@@ -1,5 +1,6 @@
 package io.github.lukegrahamlandry.cosmetics.events;
 
+import io.github.lukegrahamlandry.cosmetics.BaseCosmeticLayer;
 import io.github.lukegrahamlandry.cosmetics.CosmeticsLayer;
 import io.github.lukegrahamlandry.cosmetics.CosmeticsMain;
 import io.github.lukegrahamlandry.cosmetics.TestHelmet;
@@ -17,7 +18,7 @@ public class OverlayRenderEvent {
     @SubscribeEvent
     public static void renderthings(RenderPlayerEvent.Pre event){
         // event.getPartialRenderTick()
-        event.getRenderer().addLayer(new CosmeticsLayer(event.getRenderer()));
+        event.getRenderer().addLayer(new BaseCosmeticLayer(event.getRenderer()));
         // event.getRenderer().getMainModel().bipedHeadwear = new ModelRenderer(new TestHelmet());
     }
 }
