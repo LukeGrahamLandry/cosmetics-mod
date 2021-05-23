@@ -1,23 +1,50 @@
 package io.github.lukegrahamlandry.cosmetics;
 
 import io.github.lukegrahamlandry.cosmetics.model.DemoArmorModel;
+import io.github.lukegrahamlandry.cosmetics.model.IHasTexture;
+import io.github.lukegrahamlandry.cosmetics.model.ShadowStalker;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.ResourceLocation;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
+    private final UUID id;
+    public static HashMap<UUID, Parts> TO_DISPLAY = new HashMap<>();
+    public static class Parts{
+        public String head;
+        public String chest;
+        public String legs;
+        public String feet;
+    }
+
     private final RenderLivingBase<?> renderer2;
 
-    public CosmeticArmorLayer(RenderLivingBase<?> rendererIn) {
+    public CosmeticArmorLayer(RenderLivingBase<?> rendererIn, Entity entity) {
         super(rendererIn);
         this.renderer2 = rendererIn;
+        this.id = entity.getUniqueID();
     }
 
     protected void initArmor() {
         // unused
+    }
+
+    private ModelBiped getModelByString(String name){
+        if (name.equals("demo")){
+            return new DemoArmorModel();
+        }
+        if (name.equals("shadow")){
+            return new ShadowStalker();
+        }
+
+        return new ModelBiped();
     }
 
 
@@ -28,13 +55,13 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     public ModelBiped getModelFromSlot(EntityEquipmentSlot slotIn) {
         switch (slotIn) {
             case HEAD:
-                return new DemoArmorModel();
+                return getModelByString(TO_DISPLAY.get(this.id).head);
             case CHEST:
-                return new DemoArmorModel();
+                return getModelByString(TO_DISPLAY.get(this.id).chest);
             case LEGS:
-                return new DemoArmorModel();
+                return getModelByString(TO_DISPLAY.get(this.id).legs);
             case FEET:
-                return new DemoArmorModel();
+                return getModelByString(TO_DISPLAY.get(this.id).feet);
         }
 
         // never happens
@@ -95,8 +122,9 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
         t.setLivingAnimations(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks);
         this.setModelSlotVisible(t, slotIn);
         // boolean flag = this.isLegSlot(slotIn);
-        ResourceLocation texture = new ResourceLocation("textures/demo.png"); // get from model IHasTexture
-        this.renderer2.bindTexture(texture);  // this.getArmorResource(entityLivingBaseIn, itemstack, slotIn, null)
+        if (t instanceof IHasTexture){
+            this.renderer2.bindTexture(((IHasTexture) t).getTexture());
+        }
         t.render(entityLivingBaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
     }
 }

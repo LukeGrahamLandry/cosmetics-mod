@@ -21,17 +21,23 @@ public class CosmeticsPlugin extends JavaPlugin implements PluginMessageListener
     }
 
     public void onPluginMessageReceived(String channel, Player player, byte[] message){
-        PacketBuffer packet = new PacketBuffer(Unpooled.wrappedBuffer(message));
+        PacketBuffer packet;
+        packet = new PacketBuffer(Unpooled.wrappedBuffer(message));
         byte discriminator = packet.readByte();
         UUID playerID = packet.readUniqueId();
-        String model = packet.readString(999);
 
-        System.out.println(playerID + " vs " + player.getUniqueId() + " " + (player.getUniqueId().equals(playerID) + " said " + model));
+        int state = player.getTicksLived() % 20;
+        String toDisplay = state >= 10 ? "demo" : "shadow";
+
+        System.out.println(playerID + " vs " + player.getUniqueId() + " " + (player.getUniqueId().equals(playerID)));
 
         PacketBuffer response = new PacketBuffer(Unpooled.buffer());
         response.writeByte(discriminator);
         response.writeUniqueId(playerID);
-        response.writeString("plugin says hi");
+        for (int i=0;i<4;i++){
+            response.writeString(toDisplay);
+        }
+
         player.sendPluginMessage(this, "lukescosmetics", response.array());
 
     }

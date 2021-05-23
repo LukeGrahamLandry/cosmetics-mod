@@ -25,8 +25,6 @@ public class CosmeticsMain
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        // some example code
-        LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
         NetworkHandler.initPackets();
     }
 }

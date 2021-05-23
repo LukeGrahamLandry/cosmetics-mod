@@ -13,7 +13,7 @@ public class OverlayRenderEvent {
     @SubscribeEvent
     public static void renderthings(RenderPlayerEvent.Pre event){
         // event.getPartialRenderTick()
-        event.getRenderer().addLayer(new CosmeticArmorLayer(event.getRenderer()));
+        event.getRenderer().addLayer(new CosmeticArmorLayer(event.getRenderer(), event.getEntity()));
         // event.getRenderer().getMainModel().bipedHeadwear = new ModelRenderer(new TestHelmet());
     }
 }

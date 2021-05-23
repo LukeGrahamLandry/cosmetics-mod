@@ -7,8 +7,9 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.util.ResourceLocation;
 
-public class DemoArmorModel extends ModelBiped {
+public class DemoArmorModel extends ModelBiped implements IHasTexture{
 	private final ModelRenderer armorHead;
 	private final ModelRenderer armorHeadBottom;
 	private final ModelRenderer armorBody;
@@ -90,5 +91,10 @@ public class DemoArmorModel extends ModelBiped {
 		modelRenderer.rotateAngleX = x;
 		modelRenderer.rotateAngleY = y;
 		modelRenderer.rotateAngleZ = z;
+	}
+
+	@Override
+	public ResourceLocation getTexture() {
+		return new ResourceLocation("textures/demo.png");
 	}
 }
