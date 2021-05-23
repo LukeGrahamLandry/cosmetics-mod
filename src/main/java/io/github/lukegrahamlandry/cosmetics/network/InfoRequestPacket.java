@@ -1,25 +1,34 @@
 package io.github.lukegrahamlandry.cosmetics.network;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+
+import java.util.UUID;
 
 public class InfoRequestPacket implements IMessage {
     // A default constructor is always required
     public InfoRequestPacket(){}
 
-    private int toSend;
-    public InfoRequestPacket(int toSend) {
-        this.toSend = toSend;
+    public String model;
+    public UUID player;
+    public InfoRequestPacket(UUID player, String model) {
+        this.player = player;
+        this.model = model;
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        // Writes the int into the buf
-        buf.writeInt(toSend);
+        PacketBuffer buffer = new PacketBuffer(buf);
+        buffer.writeUniqueId(player);
+        buffer.writeString(model);
+
     }
 
-    @Override public void fromBytes(ByteBuf buf) {
-        // Reads the int back from the buf. Note that if you have multiple values, you must read in the same order you wrote.
-        toSend = buf.readInt();
+    @Override
+    public void fromBytes(ByteBuf buf) {
+        PacketBuffer buffer = new PacketBuffer(buf);
+        player = buffer.readUniqueId();
+        model = buffer.readString(99);
     }
 }

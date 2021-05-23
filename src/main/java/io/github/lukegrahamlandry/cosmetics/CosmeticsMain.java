@@ -1,5 +1,6 @@
 package io.github.lukegrahamlandry.cosmetics;
 
+import io.github.lukegrahamlandry.cosmetics.network.NetworkHandler;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -26,5 +27,6 @@ public class CosmeticsMain
     public void init(FMLInitializationEvent event) {
         // some example code
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+        NetworkHandler.initPackets();
     }
 }

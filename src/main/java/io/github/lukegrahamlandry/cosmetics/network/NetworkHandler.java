@@ -7,7 +7,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class NetworkHandler {
     public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(CosmeticsMain.MODID);
-    static {
-        INSTANCE.registerMessage(NullMsgHandler.class, InfoRequestPacket.class, 0, Side.SERVER);
+    public static void initPackets() {
+        INSTANCE.registerMessage(InfoResponseHandler.class, InfoRequestPacket.class, 0, Side.CLIENT);
+        CosmeticsMain.LOGGER.debug("init packets");
     }
 }
