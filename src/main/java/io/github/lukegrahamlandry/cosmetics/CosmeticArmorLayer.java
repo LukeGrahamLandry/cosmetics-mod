@@ -1,25 +1,23 @@
 package io.github.lukegrahamlandry.cosmetics;
 
+import io.github.lukegrahamlandry.cosmetics.model.DemoArmorModel;
 import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class BaseCosmeticLayer extends LayerArmorBase<ModelBiped> {
+public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     private final RenderLivingBase<?> renderer2;
 
-    public BaseCosmeticLayer(RenderLivingBase<?> rendererIn) {
+    public CosmeticArmorLayer(RenderLivingBase<?> rendererIn) {
         super(rendererIn);
         this.renderer2 = rendererIn;
     }
 
     protected void initArmor() {
-
+        // unused
     }
 
 
@@ -97,7 +95,7 @@ public class BaseCosmeticLayer extends LayerArmorBase<ModelBiped> {
         t.setLivingAnimations(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks);
         this.setModelSlotVisible(t, slotIn);
         // boolean flag = this.isLegSlot(slotIn);
-        ResourceLocation texture = new ResourceLocation("textures/demo.png"); // get from model
+        ResourceLocation texture = new ResourceLocation("textures/demo.png"); // get from model IHasTexture
         this.renderer2.bindTexture(texture);  // this.getArmorResource(entityLivingBaseIn, itemstack, slotIn, null)
         t.render(entityLivingBaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
     }

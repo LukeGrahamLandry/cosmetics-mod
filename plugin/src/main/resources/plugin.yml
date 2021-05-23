@@ -1,0 +1,6 @@
+name: LukesCosmetics
+version: 1.0
+author: Luke Grham Landry
+main: ca.lukegrahamlandry.cosmeticsplugin.CosmeticsPlugin
+api-version: 1.12
+website: https://github.com/LukeGrahamLandry/cosmetics-mod
