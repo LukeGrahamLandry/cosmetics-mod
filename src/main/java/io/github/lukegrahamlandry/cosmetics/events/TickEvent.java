@@ -18,7 +18,7 @@ public class TickEvent {
         if (event.side == Side.CLIENT) { // always true
             timer++;
             if (timer % 30 == 0){
-                NetworkHandler.INSTANCE.sendToServer(new InfoRequestPacket(Minecraft.getMinecraft().player.getUniqueID()));
+                // NetworkHandler.INSTANCE.sendToServer(new InfoRequestPacket(Minecraft.getMinecraft().player.getUniqueID()));
             }
         }
     }

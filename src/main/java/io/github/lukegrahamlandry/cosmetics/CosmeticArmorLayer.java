@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
+    static final ModelBiped DEMO = new DemoArmorModel();
+    static final ModelBiped SHADOW = new ShadowStalker();
+
     private final UUID id;
     public static HashMap<UUID, Parts> TO_DISPLAY = new HashMap<>();
     public static class Parts{
@@ -38,10 +41,10 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
 
     private ModelBiped getModelByString(String name){
         if (name.equals("demo")){
-            return new DemoArmorModel();
+            return DEMO;
         }
         if (name.equals("shadow")){
-            return new ShadowStalker();
+            return SHADOW;
         }
 
         return new ModelBiped();
@@ -53,6 +56,8 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     // idea being one type of
 
     public ModelBiped getModelFromSlot(EntityEquipmentSlot slotIn) {
+        return SHADOW;
+        /*
         switch (slotIn) {
             case HEAD:
                 return getModelByString(TO_DISPLAY.get(this.id).head);
@@ -66,6 +71,8 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
 
         // never happens
         return new ModelBiped(1.0F);
+
+         */
     }
 
 

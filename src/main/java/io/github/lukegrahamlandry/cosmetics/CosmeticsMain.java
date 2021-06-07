@@ -8,11 +8,11 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = CosmeticsMain.MODID, name = CosmeticsMain.NAME, version = CosmeticsMain.VERSION)
+@Mod(modid = CosmeticsMain.MODID, name = CosmeticsMain.NAME, version = CosmeticsMain.VERSION, useMetadata=true)
 public class CosmeticsMain
 {
     public static final String MODID = "lukescosmetics";
-    public static final String NAME = "Cosmetics by Luke";
+    public static final String NAME = "Luke's Cosmetics";
     public static final String VERSION = "0.8";
 
     public static Logger LOGGER;

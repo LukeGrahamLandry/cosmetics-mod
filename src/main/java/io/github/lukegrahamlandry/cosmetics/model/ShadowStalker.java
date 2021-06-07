@@ -3,6 +3,7 @@ package io.github.lukegrahamlandry.cosmetics.model;// Made with Blockbench 3.8.4
 // Paste this class into your mod and generate all required imports
 
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -10,9 +11,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
 public class ShadowStalker extends ModelBiped implements IHasTexture{
-	private final ModelRenderer bone;
-	private final ModelRenderer ombreira;
+	private final ModelRenderer RightLeg;
+	private final ModelRenderer RightLeg_r1;
+	private final ModelRenderer RightLeg2;
+	private final ModelRenderer RightLeg_r2;
 	private final ModelRenderer ombreira2;
+	private final ModelRenderer ombreira;
 	private final ModelRenderer armadura;
 	private final ModelRenderer armadura_top;
 	private final ModelRenderer body_r1;
@@ -34,41 +38,58 @@ public class ShadowStalker extends ModelBiped implements IHasTexture{
 	private final ModelRenderer Head_r2;
 	private final ModelRenderer Head_r3;
 	private final ModelRenderer Head_r4;
-	private final ModelRenderer RightLeg;
-	private final ModelRenderer RightLeg_r1;
-	private final ModelRenderer RightLeg2;
-	private final ModelRenderer RightLeg_r2;
 
 	public ShadowStalker() {
 		textureWidth = 128;
 		textureHeight = 128;
 
-		bone = new ModelRenderer(this);
-		bone.setRotationPoint(0.0F, 24.0F, 0.0F);
-		setRotationAngle(bone, 0.0F, 3.1416F, 0.0F);
-		
+		RightLeg = new ModelRenderer(this);
+		RightLeg.setRotationPoint(-3.9F, 0.0F, 0.0F);
+		bipedLeftLeg.addChild(RightLeg);
+		setRotationAngle(RightLeg, 0.0F, 3.1416F, 0.0F);
+		RightLeg.cubeList.add(new ModelBox(RightLeg, 44, 44, -2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, false));
+		RightLeg.cubeList.add(new ModelBox(RightLeg, 48, 61, -2.0F, 9.0F, -5.0F, 4, 3, 3, 0.0F, false));
 
-		ombreira = new ModelRenderer(this);
-		ombreira.setRotationPoint(0.0F, -8.0F, 0.0F);
-		bone.addChild(ombreira);
-		ombreira.cubeList.add(new ModelBox(ombreira, 54, 54, 5.9F, -12.25F, -3.4F, 4, 1, 6, 0.0F, false));
-		ombreira.cubeList.add(new ModelBox(ombreira, 16, 45, 5.5F, -16.75F, -3.0F, 4, 5, 6, 0.0F, false));
-		ombreira.cubeList.add(new ModelBox(ombreira, 34, 56, 5.25F, -17.15F, -3.4F, 1, 5, 6, 0.0F, false));
-		ombreira.cubeList.add(new ModelBox(ombreira, 20, 29, 5.252F, -13.251F, 1.45F, 2, 2, 2, 0.0F, false));
-		ombreira.cubeList.add(new ModelBox(ombreira, 0, 29, 5.252F, -13.251F, -3.45F, 2, 2, 2, 0.0F, false));
+		RightLeg_r1 = new ModelRenderer(this);
+		RightLeg_r1.setRotationPoint(1.9F, 12.0F, 0.0F);
+		RightLeg.addChild(RightLeg_r1);
+		setRotationAngle(RightLeg_r1, 0.0F, -0.7854F, 0.0F);
+		RightLeg_r1.cubeList.add(new ModelBox(RightLeg_r1, 33, 68, -4.155F, -12.0F, -1.465F, 4, 9, 4, 0.0F, false));
+
+		RightLeg2 = new ModelRenderer(this);
+		RightLeg2.setRotationPoint(3.9F, 0.0F, 0.0F);
+		bipedRightLeg.addChild(RightLeg2);
+		setRotationAngle(RightLeg2, 0.0F, -3.1416F, 0.0F);
+		RightLeg2.cubeList.add(new ModelBox(RightLeg2, 44, 44, -2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, true));
+		RightLeg2.cubeList.add(new ModelBox(RightLeg2, 48, 61, -2.0F, 9.0F, -5.0F, 4, 3, 3, 0.0F, true));
+
+		RightLeg_r2 = new ModelRenderer(this);
+		RightLeg_r2.setRotationPoint(-1.9F, 12.0F, 0.0F);
+		RightLeg2.addChild(RightLeg_r2);
+		setRotationAngle(RightLeg_r2, 0.0F, 0.7854F, 0.0F);
+		RightLeg_r2.cubeList.add(new ModelBox(RightLeg_r2, 33, 68, 0.155F, -12.0F, -1.465F, 4, 9, 4, 0.0F, true));
 
 		ombreira2 = new ModelRenderer(this);
-		ombreira2.setRotationPoint(0.0F, -8.0F, 0.0F);
-		bone.addChild(ombreira2);
+		ombreira2.setRotationPoint(4.0F, 14.0F, 0.0F);
+		bipedRightArm.addChild(ombreira2);
 		ombreira2.cubeList.add(new ModelBox(ombreira2, 54, 54, -10.7F, -12.25F, -3.4F, 4, 1, 6, 0.0F, true));
 		ombreira2.cubeList.add(new ModelBox(ombreira2, 16, 45, -10.2F, -16.75F, -3.0F, 4, 5, 6, 0.0F, true));
 		ombreira2.cubeList.add(new ModelBox(ombreira2, 34, 56, -6.25F, -17.15F, -3.4F, 1, 5, 6, 0.0F, true));
 		ombreira2.cubeList.add(new ModelBox(ombreira2, 20, 29, -7.252F, -13.251F, 1.45F, 2, 2, 2, 0.0F, true));
 		ombreira2.cubeList.add(new ModelBox(ombreira2, 0, 29, -7.252F, -13.251F, -3.45F, 2, 2, 2, 0.0F, true));
 
+		ombreira = new ModelRenderer(this);
+		ombreira.setRotationPoint(-4.0F, 14.0F, 0.0F);
+		bipedLeftArm.addChild(ombreira);
+		ombreira.cubeList.add(new ModelBox(ombreira, 54, 54, 5.9F, -12.25F, -3.4F, 4, 1, 6, 0.0F, false));
+		ombreira.cubeList.add(new ModelBox(ombreira, 16, 45, 5.5F, -16.75F, -3.0F, 4, 5, 6, 0.0F, false));
+		ombreira.cubeList.add(new ModelBox(ombreira, 34, 56, 5.25F, -17.15F, -3.4F, 1, 5, 6, 0.0F, false));
+		ombreira.cubeList.add(new ModelBox(ombreira, 20, 29, 5.252F, -13.251F, 1.45F, 2, 2, 2, 0.0F, false));
+		ombreira.cubeList.add(new ModelBox(ombreira, 0, 29, 5.252F, -13.251F, -3.45F, 2, 2, 2, 0.0F, false));
+
 		armadura = new ModelRenderer(this);
-		armadura.setRotationPoint(-0.025F, -22.4F, -0.15F);
-		bone.addChild(armadura);
+		armadura.setRotationPoint(-0.025F, 1.6F, -0.15F);
+		bipedBody.addChild(armadura);
 		armadura.cubeList.add(new ModelBox(armadura, 32, 0, -4.975F, 2.9F, -2.6F, 9, 4, 5, 0.0F, false));
 
 		armadura_top = new ModelRenderer(this);
@@ -156,8 +177,8 @@ public class ShadowStalker extends ModelBiped implements IHasTexture{
 		body_r12.cubeList.add(new ModelBox(body_r12, 59, 15, -1.45F, 0.0F, 0.1F, 1, 2, 6, 0.0F, false));
 
 		elmo = new ModelRenderer(this);
-		elmo.setRotationPoint(8.0F, 17.0F, -9.0F);
-		setRotationAngle(elmo, 0.0F, 3.1416F, 0.0F);
+		elmo.setRotationPoint(-8.0F, 16.0F, 8.0F);
+		bipedHead.addChild(elmo);
 		
 
 		Head = new ModelRenderer(this);
@@ -188,36 +209,6 @@ public class ShadowStalker extends ModelBiped implements IHasTexture{
 		Head.addChild(Head_r4);
 		setRotationAngle(Head_r4, 0.0F, 0.7854F, 0.0F);
 		Head_r4.cubeList.add(new ModelBox(Head_r4, 75, 18, -0.017F, -4.466F, -3.017F, 1, 7, 3, 0.0F, false));
-
-		RightLeg = new ModelRenderer(this);
-		RightLeg.setRotationPoint(-1.9F, 12.0F, 0.0F);
-		RightLeg.cubeList.add(new ModelBox(RightLeg, 44, 44, -2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, false));
-		RightLeg.cubeList.add(new ModelBox(RightLeg, 48, 61, -2.0F, 9.0F, -5.0F, 4, 3, 3, 0.0F, false));
-
-		RightLeg_r1 = new ModelRenderer(this);
-		RightLeg_r1.setRotationPoint(1.9F, 12.0F, 0.0F);
-		RightLeg.addChild(RightLeg_r1);
-		setRotationAngle(RightLeg_r1, 0.0F, -0.7854F, 0.0F);
-		RightLeg_r1.cubeList.add(new ModelBox(RightLeg_r1, 33, 68, -4.155F, -12.0F, -1.465F, 4, 9, 4, 0.0F, false));
-
-		RightLeg2 = new ModelRenderer(this);
-		RightLeg2.setRotationPoint(1.9F, 12.0F, 0.0F);
-		RightLeg2.cubeList.add(new ModelBox(RightLeg2, 44, 44, -2.0F, 0.0F, -2.0F, 4, 12, 4, 0.0F, true));
-		RightLeg2.cubeList.add(new ModelBox(RightLeg2, 48, 61, -2.0F, 9.0F, -5.0F, 4, 3, 3, 0.0F, true));
-
-		RightLeg_r2 = new ModelRenderer(this);
-		RightLeg_r2.setRotationPoint(-1.9F, 12.0F, 0.0F);
-		RightLeg2.addChild(RightLeg_r2);
-		setRotationAngle(RightLeg_r2, 0.0F, 0.7854F, 0.0F);
-		RightLeg_r2.cubeList.add(new ModelBox(RightLeg_r2, 33, 68, 0.155F, -12.0F, -1.465F, 4, 9, 4, 0.0F, true));
-	}
-
-	@Override
-	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-		bone.render(f5);
-		elmo.render(f5);
-		RightLeg.render(f5);
-		RightLeg2.render(f5);
 	}
 
 	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
@@ -226,9 +217,9 @@ public class ShadowStalker extends ModelBiped implements IHasTexture{
 		modelRenderer.rotateAngleZ = z;
 	}
 
-
+	final ResourceLocation TEXTURE = new ResourceLocation("textures/shadow_stalker.png");
 	@Override
 	public ResourceLocation getTexture() {
-		return new ResourceLocation("textures/shadow_stalker.png");
+		return TEXTURE;
 	}
 }
