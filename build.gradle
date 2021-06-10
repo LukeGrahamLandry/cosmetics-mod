@@ -56,11 +56,17 @@ minecraft {
     }
 }
 
+repositories{
+    maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+}
+
 dependencies {
     // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2855'
+
+    implementation fg.deobf('software.bernie.geckolib:forge-1.12.2-geckolib:3.0.0-beta.7')
 
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
@@ -120,4 +126,8 @@ configurations.all {
     resolutionStrategy {
         force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
     }
+}
+
+sourceSets {
+    main { output.resourcesDir = output.classesDir }
 }

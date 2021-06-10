@@ -1,15 +1,16 @@
 package io.github.lukegrahamlandry.cosmetics;
 
-import io.github.lukegrahamlandry.cosmetics.model.DemoArmorModel;
-import io.github.lukegrahamlandry.cosmetics.model.IHasTexture;
-import io.github.lukegrahamlandry.cosmetics.model.ShadowStalker;
+import io.github.lukegrahamlandry.cosmetics.model.*;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -17,6 +18,9 @@ import java.util.UUID;
 public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     static final ModelBiped DEMO = new DemoArmorModel();
     static final ModelBiped SHADOW = new ShadowStalker();
+    static final ModelBiped TEMPLATE = new TemplateModel();
+    static final ModelBiped POTATO = new ExampleGeoArmor();
+    static final ItemStack ANIM_ITEM = new ItemStack(new NullItem(ItemArmor.ArmorMaterial.CHAIN, 1, EntityEquipmentSlot.CHEST));
 
     private final UUID id;
     public static HashMap<UUID, Parts> TO_DISPLAY = new HashMap<>();
@@ -56,7 +60,7 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     // idea being one type of
 
     public ModelBiped getModelFromSlot(EntityEquipmentSlot slotIn) {
-        return SHADOW;
+        return POTATO;
         /*
         switch (slotIn) {
             case HEAD:
@@ -126,7 +130,14 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
         ModelBiped t = this.getModelFromSlot(slotIn);
         // t = getArmorModelHook(entityLivingBaseIn, itemstack, slotIn, t);
         t.setModelAttributes(this.renderer2.getMainModel());
-        t.setLivingAnimations(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks);
+        if (t instanceof GeoArmorRenderer){
+            // todo: figure out why sneaking is weird
+            // ((GeoArmorRenderer) t).applyEntityStats();
+            // t.isSneak = entityLivingBaseIn.isSneaking();
+            ((GeoArmorRenderer) t).setCurrentItem(entityLivingBaseIn, ANIM_ITEM, EntityEquipmentSlot.CHEST);
+        } else {
+            t.setLivingAnimations(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks);
+        }
         this.setModelSlotVisible(t, slotIn);
         // boolean flag = this.isLegSlot(slotIn);
         if (t instanceof IHasTexture){
