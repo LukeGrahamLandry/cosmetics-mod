@@ -20,7 +20,7 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     static final ModelBiped SHADOW = new ShadowStalker();
     static final ModelBiped TEMPLATE = new TemplateModel();
     static final ModelBiped POTATO = new ExampleGeoArmor();
-    static final ItemStack ANIM_ITEM = new ItemStack(new NullItem(ItemArmor.ArmorMaterial.CHAIN, 1, EntityEquipmentSlot.CHEST));
+    static final ItemStack ANIM_ITEM = new ItemStack(new NullItem(ItemArmor.ArmorMaterial.CHAIN, 1, EntityEquipmentSlot.HEAD));
 
     private final UUID id;
     public static HashMap<UUID, Parts> TO_DISPLAY = new HashMap<>();
@@ -31,7 +31,7 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
         public String feet;
     }
 
-    private final RenderLivingBase<?> renderer2;
+    public final RenderLivingBase<?> renderer2;
 
     public CosmeticArmorLayer(RenderLivingBase<?> rendererIn, Entity entity) {
         super(rendererIn);
@@ -134,7 +134,7 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
             // todo: figure out why sneaking is weird
             // ((GeoArmorRenderer) t).applyEntityStats();
             // t.isSneak = entityLivingBaseIn.isSneaking();
-            ((GeoArmorRenderer) t).setCurrentItem(entityLivingBaseIn, ANIM_ITEM, EntityEquipmentSlot.CHEST);
+            ((GeoArmorRenderer) t).setCurrentItem(entityLivingBaseIn, ANIM_ITEM, EntityEquipmentSlot.HEAD);
         } else {
             t.setLivingAnimations(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks);
         }

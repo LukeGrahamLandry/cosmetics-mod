@@ -15,12 +15,15 @@ public class TickEvent {
     static int timer = 0;
     @SubscribeEvent
     public static void renderthings(net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent event){
+        /*
         if (event.side == Side.CLIENT) { // always true
             timer++;
             if (timer % 30 == 0){
                 // NetworkHandler.INSTANCE.sendToServer(new InfoRequestPacket(Minecraft.getMinecraft().player.getUniqueID()));
             }
         }
+
+         */
     }
 }
 

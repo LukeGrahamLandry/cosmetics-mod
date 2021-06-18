@@ -10,5 +10,5 @@
   "credits": "Commissioned by GTB",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []
+  "dependencies": ["geckolib3"]
 }]
