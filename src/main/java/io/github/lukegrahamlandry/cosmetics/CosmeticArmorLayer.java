@@ -20,6 +20,7 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     static final ModelBiped SHADOW = new ShadowStalker();
     static final ModelBiped TEMPLATE = new TemplateModel();
     static final ModelBiped POTATO = new ExampleGeoArmor();
+
     static final ItemStack ANIM_ITEM = new ItemStack(new NullItem(ItemArmor.ArmorMaterial.CHAIN, 1, EntityEquipmentSlot.HEAD));
 
     private final UUID id;
@@ -29,6 +30,16 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
         public String chest;
         public String legs;
         public String feet;
+
+        @Override
+        public String toString() {
+            return "Parts{" +
+                    "head='" + head + '\'' +
+                    ", chest='" + chest + '\'' +
+                    ", legs='" + legs + '\'' +
+                    ", feet='" + feet + '\'' +
+                    '}';
+        }
     }
 
     public final RenderLivingBase<?> renderer2;
@@ -44,14 +55,11 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     }
 
     private ModelBiped getModelByString(String name){
-        if (name.equals("demo")){
-            return DEMO;
-        }
-        if (name.equals("shadow")){
-            return SHADOW;
-        }
+        if (name.equals("demo")) return DEMO;
+        if (name.equals("shadow"))  return SHADOW;
+        if (name.equals("potato"))  return POTATO;
 
-        return new ModelBiped();
+        return null;
     }
 
 
@@ -60,8 +68,6 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     // idea being one type of
 
     public ModelBiped getModelFromSlot(EntityEquipmentSlot slotIn) {
-        return POTATO;
-        /*
         switch (slotIn) {
             case HEAD:
                 return getModelByString(TO_DISPLAY.get(this.id).head);
@@ -71,44 +77,39 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
                 return getModelByString(TO_DISPLAY.get(this.id).legs);
             case FEET:
                 return getModelByString(TO_DISPLAY.get(this.id).feet);
+            default:
+                return null;
         }
-
-        // never happens
-        return new ModelBiped(1.0F);
-
-         */
     }
 
 
     @SuppressWarnings("incomplete-switch")
     protected void setModelSlotVisible(ModelBiped p_188359_1_, EntityEquipmentSlot slotIn) {
-        this.setModelVisible(p_188359_1_);
+        p_188359_1_.bipedHead.showModel = false;
+        p_188359_1_.bipedHeadwear.showModel = false;
+        p_188359_1_.bipedBody.showModel = false;
+        p_188359_1_.bipedRightArm.showModel = false;
+        p_188359_1_.bipedLeftArm.showModel = false;
+        // p_188359_1_.bipedBody.showModel = false;
+        p_188359_1_.bipedRightLeg.showModel = false;
+        p_188359_1_.bipedLeftLeg.showModel = false;
+        // p_188359_1_.bipedRightLeg.showModel = false;
+        // p_188359_1_.bipedLeftLeg.showModel = false;
 
-        switch (slotIn)
-        {
-            case HEAD:
-                p_188359_1_.bipedHead.showModel = true;
-                p_188359_1_.bipedHeadwear.showModel = true;
-                break;
-            case CHEST:
-                p_188359_1_.bipedBody.showModel = true;
-                p_188359_1_.bipedRightArm.showModel = true;
-                p_188359_1_.bipedLeftArm.showModel = true;
-                break;
-            case LEGS:
-                p_188359_1_.bipedBody.showModel = true;
-                p_188359_1_.bipedRightLeg.showModel = true;
-                p_188359_1_.bipedLeftLeg.showModel = true;
-                break;
-            case FEET:
-                p_188359_1_.bipedRightLeg.showModel = true;
-                p_188359_1_.bipedLeftLeg.showModel = true;
+        if (slotIn == EntityEquipmentSlot.HEAD){
+            p_188359_1_.bipedHead.showModel = true;
+            p_188359_1_.bipedHeadwear.showModel = true;
+        } else if (slotIn == EntityEquipmentSlot.CHEST){
+            p_188359_1_.bipedBody.showModel = true;
+            p_188359_1_.bipedRightArm.showModel = true;
+            p_188359_1_.bipedLeftArm.showModel = true;
+        } else if (slotIn == EntityEquipmentSlot.LEGS){
+            p_188359_1_.bipedRightLeg.showModel = true;
+            p_188359_1_.bipedLeftLeg.showModel = true;
+        } else if (slotIn == EntityEquipmentSlot.FEET){
+            p_188359_1_.bipedRightLeg.showModel = true;
+            p_188359_1_.bipedLeftLeg.showModel = true;
         }
-    }
-
-    protected void setModelVisible(ModelBiped model)
-    {
-        model.setVisible(false);
     }
 
     @Override
@@ -125,20 +126,22 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
         this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EntityEquipmentSlot.HEAD);
     }
     
-    private void renderArmorLayer(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slotIn)
-    {
+    private void renderArmorLayer(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slotIn) {
         ModelBiped t = this.getModelFromSlot(slotIn);
+        if (t == null) return;
         // t = getArmorModelHook(entityLivingBaseIn, itemstack, slotIn, t);
         t.setModelAttributes(this.renderer2.getMainModel());
+
         if (t instanceof GeoArmorRenderer){
             // todo: figure out why sneaking is weird
             // ((GeoArmorRenderer) t).applyEntityStats();
             // t.isSneak = entityLivingBaseIn.isSneaking();
-            ((GeoArmorRenderer) t).setCurrentItem(entityLivingBaseIn, ANIM_ITEM, EntityEquipmentSlot.HEAD);
+            ((GeoArmorRenderer) t).setCurrentItem(entityLivingBaseIn, ANIM_ITEM, slotIn);
+            ((GeoArmorRenderer) t).applySlot(slotIn);
         } else {
+            this.setModelSlotVisible(t, slotIn);
             t.setLivingAnimations(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks);
         }
-        this.setModelSlotVisible(t, slotIn);
         // boolean flag = this.isLegSlot(slotIn);
         if (t instanceof IHasTexture){
             this.renderer2.bindTexture(((IHasTexture) t).getTexture());

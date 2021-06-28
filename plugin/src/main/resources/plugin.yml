@@ -4,3 +4,9 @@ author: Luke Grham Landry
 main: ca.lukegrahamlandry.cosmeticsplugin.CosmeticsPlugin
 api-version: 1.12
 website: https://github.com/LukeGrahamLandry/cosmetics-mod
+
+commands:
+  cosmetic:
+    description: Set your displayed cosmetic model
+    usage: /<cosmetic> <head, chest, feet, legs> <model name>
+    permission: bukkit.command.version

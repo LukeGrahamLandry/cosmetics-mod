@@ -19,6 +19,7 @@ public class InfoResponseHandler implements IMessageHandler<InfoRequestPacket, I
             parts.legs = message.legs;
             parts.feet = message.feet;
             CosmeticArmorLayer.TO_DISPLAY.put(message.player, parts);
+            System.out.println(parts);
         });
         return null;
     }
