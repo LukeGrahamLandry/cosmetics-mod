@@ -14,10 +14,11 @@ import net.minecraftforge.fml.relauncher.Side;
 @Mod.EventBusSubscriber(modid= CosmeticsMain.MODID)
 public class TickEvent {
 
+    // i think this does nothing
     @SubscribeEvent
     public static void sync(PlayerEvent.PlayerLoggedInEvent event){
         CosmeticsMain.LOGGER.debug("player login");
-        NetworkHandler.INSTANCE.sendToServer(new InfoRequestPacket(Minecraft.getMinecraft().player.getUniqueID()));
+        if (event.player.world.isRemote) NetworkHandler.INSTANCE.sendToServer(new InfoRequestPacket(Minecraft.getMinecraft().player.getUniqueID()));
     }
 
     /*

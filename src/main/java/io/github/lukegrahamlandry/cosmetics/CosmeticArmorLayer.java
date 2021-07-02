@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
@@ -21,9 +22,14 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     static final ModelBiped TEMPLATE = new TemplateModel();
     static final ModelBiped POTATO = new ExampleGeoArmor();
 
-    static final ItemStack ANIM_ITEM = new ItemStack(new NullItem(ItemArmor.ArmorMaterial.CHAIN, 1, EntityEquipmentSlot.HEAD));
+    static final Map<EntityEquipmentSlot, ItemStack> ANIM_ITEM = new HashMap<>();
+    static {
+        ANIM_ITEM.put(EntityEquipmentSlot.HEAD, new ItemStack(new NullItem(ItemArmor.ArmorMaterial.CHAIN, 1, EntityEquipmentSlot.HEAD)));
+        ANIM_ITEM.put(EntityEquipmentSlot.CHEST, new ItemStack(new NullItem(ItemArmor.ArmorMaterial.CHAIN, 1, EntityEquipmentSlot.CHEST)));
+        ANIM_ITEM.put(EntityEquipmentSlot.LEGS, new ItemStack(new NullItem(ItemArmor.ArmorMaterial.CHAIN, 1, EntityEquipmentSlot.LEGS)));
+        ANIM_ITEM.put(EntityEquipmentSlot.FEET, new ItemStack(new NullItem(ItemArmor.ArmorMaterial.CHAIN, 1, EntityEquipmentSlot.FEET)));
+    }
 
-    private final UUID id;
     public static HashMap<UUID, Parts> TO_DISPLAY = new HashMap<>();
     public static class Parts{
         public String head;
@@ -44,16 +50,16 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
 
     public final RenderLivingBase<?> renderer2;
 
-    public CosmeticArmorLayer(RenderLivingBase<?> rendererIn, Entity entity) {
+    public CosmeticArmorLayer(RenderLivingBase<?> rendererIn) {
         super(rendererIn);
         this.renderer2 = rendererIn;
-        this.id = entity.getUniqueID();
     }
 
     protected void initArmor() {
         // unused
     }
 
+    // "none" is reserved 
     private ModelBiped getModelByString(String name){
         if (name.equals("demo")) return DEMO;
         if (name.equals("shadow"))  return SHADOW;
@@ -67,16 +73,17 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     // setModelSlotVisible sets them invisible based on the slot
     // idea being one type of
 
-    public ModelBiped getModelFromSlot(EntityEquipmentSlot slotIn) {
+    public ModelBiped getModelFromSlot(EntityEquipmentSlot slotIn, UUID id) {
+        if (!TO_DISPLAY.containsKey(id)) return null;
         switch (slotIn) {
             case HEAD:
-                return getModelByString(TO_DISPLAY.get(this.id).head);
+                return getModelByString(TO_DISPLAY.get(id).head);
             case CHEST:
-                return getModelByString(TO_DISPLAY.get(this.id).chest);
+                return getModelByString(TO_DISPLAY.get(id).chest);
             case LEGS:
-                return getModelByString(TO_DISPLAY.get(this.id).legs);
+                return getModelByString(TO_DISPLAY.get(id).legs);
             case FEET:
-                return getModelByString(TO_DISPLAY.get(this.id).feet);
+                return getModelByString(TO_DISPLAY.get(id).feet);
             default:
                 return null;
         }
@@ -118,8 +125,7 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     }
 
     @Override
-    public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
-    {
+    public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EntityEquipmentSlot.CHEST);
         this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EntityEquipmentSlot.LEGS);
         this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EntityEquipmentSlot.FEET);
@@ -127,17 +133,20 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     }
     
     private void renderArmorLayer(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slotIn) {
-        ModelBiped t = this.getModelFromSlot(slotIn);
+        ModelBiped t = this.getModelFromSlot(slotIn, entityLivingBaseIn.getUniqueID());
         if (t == null) return;
+
         // t = getArmorModelHook(entityLivingBaseIn, itemstack, slotIn, t);
         t.setModelAttributes(this.renderer2.getMainModel());
 
         if (t instanceof GeoArmorRenderer){
             // todo: figure out why sneaking is weird
-            // ((GeoArmorRenderer) t).applyEntityStats();
+            ((GeoArmorRenderer) t).applyEntityStats((ModelBiped) this.renderer2.getMainModel());
             // t.isSneak = entityLivingBaseIn.isSneaking();
-            ((GeoArmorRenderer) t).setCurrentItem(entityLivingBaseIn, ANIM_ITEM, slotIn);
+            // t.isRiding = entityLivingBaseIn.isRiding();
+
             ((GeoArmorRenderer) t).applySlot(slotIn);
+            ((GeoArmorRenderer) t).setCurrentItem(entityLivingBaseIn, ANIM_ITEM.get(slotIn), slotIn);
         } else {
             this.setModelSlotVisible(t, slotIn);
             t.setLivingAnimations(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks);
@@ -146,6 +155,7 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
         if (t instanceof IHasTexture){
             this.renderer2.bindTexture(((IHasTexture) t).getTexture());
         }
+        // System.out.println(entityLivingBaseIn.isSneaking() + " " + t.isSneak);
         t.render(entityLivingBaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
     }
 }

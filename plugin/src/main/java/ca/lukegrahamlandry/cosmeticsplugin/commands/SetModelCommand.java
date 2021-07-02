@@ -56,7 +56,6 @@ public class SetModelCommand implements CommandExecutor {
             this.plugin.syncPlayerToAll(player.getUniqueId());
         }
 
-        // If the player (or console) uses our command correct, we can return true
         return true;
     }
 }

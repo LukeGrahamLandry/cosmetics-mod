@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class InfoResponseHandler implements IMessageHandler<InfoRequestPacket, IMessage> {
     @Override
     public IMessage onMessage(InfoRequestPacket message, MessageContext ctx) {
-        CosmeticsMain.LOGGER.debug("message");
         Minecraft.getMinecraft().addScheduledTask(() -> {
             CosmeticArmorLayer.Parts parts = new CosmeticArmorLayer.Parts();
             parts.head = message.head;
@@ -19,7 +18,7 @@ public class InfoResponseHandler implements IMessageHandler<InfoRequestPacket, I
             parts.legs = message.legs;
             parts.feet = message.feet;
             CosmeticArmorLayer.TO_DISPLAY.put(message.player, parts);
-            System.out.println(parts);
+            System.out.println(message.player + " " + parts);
         });
         return null;
     }
