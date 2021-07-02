@@ -85,6 +85,7 @@ public class CosmeticsPlugin extends JavaPlugin implements PluginMessageListener
         packetData.writeString(CosmeticsData.TO_DISPLAY.get(playerToUpdate).feet);
 
         for (Player player : this.getServer().getOnlinePlayers()){
+            // System.out.println(player.getName());
             player.sendPluginMessage(this, "lukescosmetics", packetData.array());
         }
     }

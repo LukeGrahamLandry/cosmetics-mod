@@ -18,7 +18,7 @@ public class TickEvent {
     @SubscribeEvent
     public static void sync(PlayerEvent.PlayerLoggedInEvent event){
         CosmeticsMain.LOGGER.debug("player login");
-        if (event.player.world.isRemote) NetworkHandler.INSTANCE.sendToServer(new InfoRequestPacket(Minecraft.getMinecraft().player.getUniqueID()));
+        // if (event.player.world.isRemote) NetworkHandler.INSTANCE.sendToServer(new InfoRequestPacket(Minecraft.getMinecraft().player.getUniqueID()));
     }
 
     /*

@@ -21,14 +21,14 @@ public class CosmeticsMain {
     }
 
     @EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
         LOGGER = event.getModLog();
+        NetworkHandler.initPackets();
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        NetworkHandler.initPackets();
+
     }
 
     @Mod.EventHandler
