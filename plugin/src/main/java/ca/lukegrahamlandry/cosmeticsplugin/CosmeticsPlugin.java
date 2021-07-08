@@ -1,6 +1,7 @@
 package ca.lukegrahamlandry.cosmeticsplugin;
 
 import ca.lukegrahamlandry.cosmeticsplugin.commands.SetModelCommand;
+import com.google.gson.*;
 import io.netty.buffer.Unpooled;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.entity.Player;
@@ -12,6 +13,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.UUID;
 
 public class CosmeticsPlugin extends JavaPlugin implements PluginMessageListener, Listener {
@@ -27,11 +34,54 @@ public class CosmeticsPlugin extends JavaPlugin implements PluginMessageListener
         this.getCommand("cosmetic").setExecutor(new SetModelCommand(this));
 
         getServer().getPluginManager().registerEvents(this, this);
+
+        if (getDataFolder().exists()){
+            File saved = new File(getDataFolder(), "cosmetics.json");
+            if (saved.exists()){
+                String data = readMultiline(saved);
+                JsonObject obj = new JsonParser().parse(data).getAsJsonObject();
+
+                obj.entrySet().forEach((entry) -> {
+                    UUID id = UUID.fromString(entry.getKey());
+                    CosmeticsData.Parts parts = new CosmeticsData.Parts();
+                    JsonObject savedData = entry.getValue().getAsJsonObject();
+                    parts.head = savedData.get("head").getAsString();
+                    parts.chest = savedData.get("chest").getAsString();
+                    parts.legs = savedData.get("legs").getAsString();
+                    parts.feet = savedData.get("feet").getAsString();
+                    CosmeticsData.TO_DISPLAY.put(id, parts);
+                });
+            }
+        }
     }
 
     @Override
     public void onDisable(){
-        // Fired when the server stops and disables all plugins
+        JsonObject cosmeticsToSave = new JsonObject();
+
+        CosmeticsData.TO_DISPLAY.forEach((uuid, parts) -> {
+            JsonObject partsJson = new JsonObject();
+            partsJson.addProperty("head", parts.head);
+            partsJson.addProperty("chest", parts.chest);
+            partsJson.addProperty("legs", parts.legs);
+            partsJson.addProperty("feet", parts.feet);
+            cosmeticsToSave.add(uuid.toString(), partsJson);
+        });
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String stringToSave = gson.toJson(cosmeticsToSave);
+
+        if (!getDataFolder().exists()) getDataFolder().mkdirs();
+        File saved = new File(getDataFolder(), "cosmetics.json");
+        try {
+            FileWriter writer = new FileWriter(saved);
+            writer.write(stringToSave);
+            writer.close();
+        } catch (IOException e){
+            System.out.println("couldn't create file");
+            e.printStackTrace();
+        }
+
     }
 
     @EventHandler
@@ -133,5 +183,22 @@ public class CosmeticsPlugin extends JavaPlugin implements PluginMessageListener
             this.permission = ((Permission)permissionProvider.getProvider());
         }
         return this.permission != null;
+    }
+
+
+    private static String readMultiline(File dataLocation){
+        StringBuilder data = new StringBuilder();
+
+        try {
+            Scanner reader = new Scanner(dataLocation);
+            while (reader.hasNext()){
+                data.append(reader.nextLine());
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return data.toString();
     }
 }
