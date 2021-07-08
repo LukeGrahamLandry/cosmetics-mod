@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ public class CosmeticsPlugin extends JavaPlugin implements PluginMessageListener
         this.getServer().getMessenger().registerIncomingPluginChannel(this, "lukescosmetics", this);
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "lukescosmetics");
 
-        if (!this.setupPermissions()) System.out.println("failed to setup permissions !!!! THIS IS A PROBLEM");
+        if (!this.setupPermissions()) System.out.println("cosmetics failed to setup permissions !!!! THIS IS A PROBLEM");
         this.getCommand("cosmetic").setExecutor(new SetModelCommand(this));
 
         getServer().getPluginManager().registerEvents(this, this);
@@ -42,15 +43,34 @@ public class CosmeticsPlugin extends JavaPlugin implements PluginMessageListener
         // System.out.println("join" + this.permission.playerHas(null, event.getPlayer(), "3darmor.head.demo"));
 
         if (!CosmeticsData.TO_DISPLAY.containsKey(event.getPlayer().getUniqueId())) CosmeticsData.TO_DISPLAY.put(event.getPlayer().getUniqueId(), new CosmeticsData.Parts());
-        syncAllToPlayer(event.getPlayer());
-        syncPlayerToAll(event.getPlayer().getUniqueId());
+
+        getServer().broadcastMessage("player joined");
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                getServer().broadcastMessage("run sync cosmetics");
+
+                Object[] players = getServer().getOnlinePlayers().toArray();
+                for (Object player : players){
+                    getServer().broadcastMessage(((Player)player).getDisplayName() + ": " + CosmeticsData.TO_DISPLAY.get(((Player)player).getUniqueId()));
+                    syncPlayerToAll(((Player)player).getUniqueId());
+                }
+            }
+
+        }.runTaskLater(this, 20);
+
+        // syncAllToPlayer(event.getPlayer());
+        // syncPlayerToAll(event.getPlayer().getUniqueId());
+        //for (Player player : this.getServer().getOnlinePlayers()){
+          //  syncPlayerToAll(player.getUniqueId());
+        //}
     }
 
-
-    // was supposed to be set by the commented code but its 0 so the lowest byte value is fine
+    // was supposed to be set by the commented code but its 0 so the lowest byte value is fine (as long as you dont change the value in the mod)
     byte discriminator;
 
     // it only sends a packet when someone first joins
+    // now doesnt even do that, can remove
 
     public void onPluginMessageReceived(String channel, Player player, byte[] message){
         /* client isnt actually senidng the packet so dont need this
