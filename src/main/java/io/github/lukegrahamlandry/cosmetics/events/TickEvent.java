@@ -21,6 +21,12 @@ public class TickEvent {
         // if (event.player.world.isRemote) NetworkHandler.INSTANCE.sendToServer(new InfoRequestPacket(Minecraft.getMinecraft().player.getUniqueID()));
     }
 
+    @SubscribeEvent
+    public static void sync(PlayerEvent.PlayerLoggedOutEvent event){
+        CosmeticsMain.LOGGER.debug("player leave. clearing cosmetics");
+        CosmeticArmorLayer.TO_DISPLAY.clear();
+    }
+
     /*
     static int timer = 0;
     @SubscribeEvent

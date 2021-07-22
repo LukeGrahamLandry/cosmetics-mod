@@ -6,13 +6,12 @@ import net.minecraft.util.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoArmorRenderer;
 
-// this model is simply an example
-// the geometry and texture files are from geckolib's example mod: https://github.com/bernie-g/geckolib
+// the potato example the geometry and texture files are from geckolib's example mod: https://github.com/bernie-g/geckolib
 // license: MIT
 
 public class ExampleGeoArmor extends GeoArmorRenderer<NullItem> {
-    public ExampleGeoArmor() {
-        super(new Model());
+    public ExampleGeoArmor(String name) {
+        super(new Model(name));
 
         this.headBone = "bipedHead";
         this.bodyBone = "bipedBody";
@@ -30,14 +29,19 @@ public class ExampleGeoArmor extends GeoArmorRenderer<NullItem> {
     }
 
     static class Model extends AnimatedGeoModel<NullItem> {
+        String name;
+        public Model(String name){
+            this.name = name;
+        }
+
         @Override
         public ResourceLocation getModelLocation(NullItem object) {
-            return new ResourceLocation(CosmeticsMain.MODID, "geo/example.json");
+            return new ResourceLocation(CosmeticsMain.MODID, "geo/" + this.name + ".json");
         }
 
         @Override
         public ResourceLocation getTextureLocation(NullItem object) {
-            return new ResourceLocation(CosmeticsMain.MODID, "textures/example.png");
+            return new ResourceLocation(CosmeticsMain.MODID, "textures/" + this.name + ".png");
         }
 
         @Override

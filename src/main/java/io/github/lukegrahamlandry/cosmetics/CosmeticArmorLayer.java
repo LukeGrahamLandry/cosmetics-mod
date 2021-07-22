@@ -17,10 +17,27 @@ import java.util.Map;
 import java.util.UUID;
 
 public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
+    static Map<String, ModelBiped> geoModels = new HashMap();
+    static {
+        // add $NAME to this list
+        // texture must be in src/main/resources/assets/lukescosmetics/textures/$NAME.png
+        // geo model file must be in src/main/resources/assets/lukescosmetics/geo/$NAME.json
+        // use the model ingame with /cosmetic SBODY_PART $NAME
+        String[] geoFilePaths = new String[]{
+                "potato"
+        };
+
+        for (String path : geoFilePaths){
+            geoModels.put(path, new ExampleGeoArmor(path));
+        }
+    }
+
+
+
+
     static final ModelBiped DEMO = new DemoArmorModel();
     static final ModelBiped SHADOW = new ShadowStalker();
     static final ModelBiped TEMPLATE = new TemplateModel();
-    static final ModelBiped POTATO = new ExampleGeoArmor();
 
     static final Map<EntityEquipmentSlot, ItemStack> ANIM_ITEM = new HashMap<>();
     static {
@@ -63,7 +80,8 @@ public class CosmeticArmorLayer extends LayerArmorBase<ModelBiped> {
     private ModelBiped getModelByString(String name){
         if (name.equals("demo")) return DEMO;
         if (name.equals("shadow"))  return SHADOW;
-        if (name.equals("potato"))  return POTATO;
+
+        if (geoModels.containsKey(name)) return geoModels.get(name);
 
         return null;
     }
