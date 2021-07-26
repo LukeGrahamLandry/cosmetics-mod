@@ -98,11 +98,11 @@ public class CosmeticsPlugin extends JavaPlugin implements PluginMessageListener
         new BukkitRunnable() {
             @Override
             public void run() {
-                getServer().broadcastMessage("run sync cosmetics");
+                // getServer().broadcastMessage("run sync cosmetics");
 
                 Object[] players = getServer().getOnlinePlayers().toArray();
                 for (Object player : players){
-                    getServer().broadcastMessage(((Player)player).getDisplayName() + ": " + CosmeticsData.TO_DISPLAY.get(((Player)player).getUniqueId()));
+                    // getServer().broadcastMessage(((Player)player).getDisplayName() + ": " + CosmeticsData.TO_DISPLAY.get(((Player)player).getUniqueId()));
                     syncPlayerToAll(((Player)player).getUniqueId());
                 }
             }
